@@ -171,7 +171,7 @@ target_tracking_configuration {
 
 _This module has the following outputs:_
 
-_The ARN assigned by AWS to the scaling policy_ : * **_arn_**
+_The ARN assigned by AWS to the scaling policy_ : **_arn_**
 
 _The scaling policy's name_ : **_name_**
 
