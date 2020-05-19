@@ -12,7 +12,7 @@ resource "aws_autoscaling_policy" "autoscaling_policy" {
   ## StepScaling ##
   metric_aggregation_type = var.metric_aggregation_type
   dynamic "step_adjustment" {
-    for_each = var.step_adjustment == {} ? [] : [var.step_adjustment]
+    for_each = var.step_adjustment
     content {
       metric_interval_lower_bound = lookup(step_adjustment.value, "metric_interval_lower_bound", null)
       metric_interval_upper_bound = lookup(step_adjustment.value, "metric_interval_upper_bound", null)
