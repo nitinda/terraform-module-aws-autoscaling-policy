@@ -85,14 +85,80 @@ _The variables required in order for the module to be successfully called from t
 |:----|:----|-----:|:---:|:---:|
 | **_name_** | _The name of the policy_ | _string_ | **_Required_** |
 | **_autoscaling\_group\_name_** | _The name of the autoscaling group_ | _string_ | **_Required_** |
-| **_adjustment\_type_** | _Specifies whether the adjustment is an absolute number or a percentage of the current capacity. Valid values are_ **_ChangeInCapacity_**, **_ExactCapacity_**_, and_ **_PercentChangeInCapacity_** | _string_ | **_Optional_** |
+| **_adjustment\_type_** | _Specifies whether the adjustment is an absolute number or a percentage of the current capacity. Valid values are_ **_ChangeInCapacity_**, **_ExactCapacity_**_, and_ **_PercentChangeInCapacity_** | _string_ | **_Optional_** | **_null_** |
 | **_policy\_type_** | _The policy type, either_ **_"SimpleScaling"_**, **_"StepScaling"_** _or_ **_"TargetTrackingScaling"_**_. If this value isn't provided, AWS will default to **_"SimpleScaling"_**_ | _string_ | **_Optional_** | **_SimpleScaling_** |
 | **_estimated\_instance\_warmup_** | _The estimated time, in seconds, until a newly launched instance will contribute CloudWatch metrics. Without a value, AWS will default to the group's specified cooldown period._ | _number_ | **_Optional_** | **_30_** |
 
 
 
 
-> **_NOTE_**_: If you specify at least one metric_query, you may not specify a metric_name, namespace, period or statistic. If you do not specify a metric_query, you must specify each of these (although you may use extended_statistic instead of statistic)._
+> _The following arguments are only available to_ **_"SimpleScaling"_** _type policies:_
+
+|**_Variable_** | **_Description_** | **_Type_** | **_Argument Status_** | **_Default Value_** |
+|:----|:----|-----:|:---:|:---:|
+| **_cooldown_** | _The amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start_ | _number_ | **_Optional_** | **_0_** |
+| **_scaling\_adjustment_** | _The number of instances by which to scale. adjustment\_type determines the interpretation of this number (e.g., as an absolute number or as a percentage of the existing Auto Scaling group size). A positive increment adds to the current capacity and a negative value removes from the current capacity._ | _string_ | **_Optional_** | **_null_** |
+
+
+> _The following arguments are only available to_ **_"StepScaling"_** _type policies:_
+
+|**_Variable_** | **_Description_** | **_Type_** | **_Argument Status_** | **_Default Value_** |
+|:----|:----|-----:|:---:|:---:|
+| **_scaling\_adjustment_** | _The aggregation type for the policy's metrics. Valid values are_ **_"Minimum"_**, **_"Maximum"_**_, and_ **_"Average"_**_. Without a value, AWS will treat the aggregation type as "Average"._ | _string_ | **_Optional_** | **_Average_** |
+| **_step\_adjustment_** | _A set of adjustments that manage group scaling._ | _any_ | **_Optional_** | **_[]_** |
+
+```tf
+step_adjustment {
+    metric_interval_lower_bound = 0
+    metric_interval_upper_bound = 50
+    scaling_adjustment = 1
+}
+
+step_adjustment {
+    metric_interval_lower_bound = 50
+    scaling_adjustment = 2
+}
+```
+
+> _The following fields are available in step adjustments:_
+
+|**_Variable_** | **_Description_** | **_Type_** | **_Argument Status_** | **_Default Value_** |
+|:----|:----|-----:|:---:|:---:|
+| **_scaling\_adjustment_** | _The number of members by which to scale, when the adjustment bounds are breached. A positive value scales up. A negative value scales down._ | _string_ | **_Required_** |
+| **_metric\_interval\_lower\_bound_** | _The lower bound for the difference between the alarm threshold and the CloudWatch metric. Without a value, AWS will treat this bound as infinity._ | _string_ | **_Optional_** | **_null_** |
+| **_metric\_interval\_upper\_bound_** | _The upper bound for the difference between the alarm threshold and the CloudWatch metric. Without a value, AWS will treat this bound as infinity. The upper bound must be greater than the lower bound._ | _string_ | **_Optional_** | **_null_** |
+
+
+> _The following arguments are only available to_ **_"TargetTrackingScaling"_** _type policies:_
+
+|**_Variable_** | **_Description_** | **_Type_** | **_Argument Status_** | **_Default Value_** |
+|:----|:----|-----:|:---:|:---:|
+| **_target\_tracking\_configuration_** | _A target tracking policy. These have the following structure._ | _any_ | **_Optional_** |
+
+```tf
+target_tracking_configuration {
+  predefined_metric_specification {
+    predefined_metric_type = "ASGAverageCPUUtilization"
+  }
+
+  target_value = 40.0
+}
+
+target_tracking_configuration {
+  customized_metric_specification {
+    metric_dimension {
+      name  = "fuga"
+      value = "fuga"
+    }
+
+    metric_name = "hoge"
+    namespace   = "hoge"
+    statistic   = "Average"
+  }
+
+  target_value = 40.0
+}
+```
 
 
 ---
@@ -103,13 +169,13 @@ _The variables required in order for the module to be successfully called from t
 
 _This module has the following outputs:_
 
-_The ARN of the cloudwatch metric alarm_
-* **_arn_**
+_The ARN assigned by AWS to the scaling policy_ : * **_arn_**
 
-_The ID of the health check_
-* **_id_**
+_The scaling policy's name_ : **_name_**
 
+_The scaling policy's adjustment type_ : **_adjustment\_type_**
 
+_The scaling policy's type_ : **_policy\_type_**
 ---
 
 
