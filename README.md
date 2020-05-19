@@ -176,6 +176,8 @@ _The scaling policy's name_ : **_name_**
 _The scaling policy's adjustment type_ : **_adjustment\_type_**
 
 _The scaling policy's type_ : **_policy\_type_**
+
+
 ---
 
 
