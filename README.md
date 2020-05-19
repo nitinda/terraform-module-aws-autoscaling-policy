@@ -135,6 +135,8 @@ step_adjustment {
 |:----|:----|-----:|:---:|:---:|
 | **_target\_tracking\_configuration_** | _A target tracking policy. These have the following structure._ | _any_ | **_Optional_** | **_{}_** |
 
+
+
 ```tf
 target_tracking_configuration {
   predefined_metric_specification {
