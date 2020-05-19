@@ -55,17 +55,40 @@ _To use this module, add the following call to your code:_
 
 > **_NOTE_**_: You may want to omit desired_capacity attribute from attached aws_autoscaling_group when using autoscaling policies. It's good practice to pick either [manual](https://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/as-manual-scaling.html) or [dynamic](https://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/as-scale-based-on-demand.html) (policy-based) scaling._
 
-* **_Example Usage_**
+* **_Example Usage Simple Scaling_**
 
 ```tf
-module "autoscaling_policy" {
+# resource "aws_autoscaling_policy" "scal_up" {
+#   provider               = aws.services
+#   name                   = "scal_up"
+#   # scaling_adjustment     = 1
+#   policy_type            = "TargetTrackingScaling"
+#   adjustment_type        = "ChangeInCapacity"
+#   # cooldown               = 10
+#   estimated_instance_warmup = 2
+#   autoscaling_group_name = module.autoscaling_group_ec2.name
+#   target_tracking_configuration {
+#       predefined_metric_specification {
+#           predefined_metric_type = "ASGAverageCPUUtilization"
+#       }
+#       target_value = 10.0
+#     }
+# }
+
+
+module "autoscaling_policy_up" {
   source = "git::https://github.com/nitinda/terraform-module-aws-autoscaling-policy.git?ref=master"
 
   providers = {
     aws = aws.services
   }
 
-  
+  name                      = "scal_up"
+  scaling_adjustment        = 1
+  adjustment_type           = "ChangeInCapacity"
+  cooldown                  = 10
+  estimated_instance_warmup = 2
+  autoscaling_group_name    = module.autoscaling_group.name  
 }
 ```
 
