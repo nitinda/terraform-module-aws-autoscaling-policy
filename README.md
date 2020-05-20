@@ -166,7 +166,7 @@ _The variables required in order for the module to be successfully called from t
 | **_autoscaling\_group\_name_** | _The name of the autoscaling group_ | _string_ | **_Required_** |
 | **_adjustment\_type_** | _Specifies whether the adjustment is an absolute number or a percentage of the current capacity. Valid values are_ **_ChangeInCapacity_**, **_ExactCapacity_**_, and_ **_PercentChangeInCapacity_** | _string_ | **_Optional_** | **_null_** |
 | **_policy\_type_** | _The policy type, either_ **_"SimpleScaling"_**, **_"StepScaling"_** _or_ **_"TargetTrackingScaling"_**_. If this value isn't provided, AWS will default to_ **_"SimpleScaling"_** | _string_ | **_Optional_** | **_SimpleScaling_** |
-| **_estimated\_instance\_warmup_** | _The estimated time, in seconds, until a newly launched instance will contribute CloudWatch metrics. Without a value, AWS will default to the group's specified cooldown period._ | _number_ | **_Optional_** | **_30_** |
+| **_estimated\_instance\_warmup_** | _The estimated time, in seconds, until a newly launched instance will contribute CloudWatch metrics. Without a value, AWS will default to the group's specified cooldown period._ | _number_ | **_Optional_** | **_null_** |
 
 
 
