@@ -18,7 +18,7 @@ variable "policy_type" {
 
 variable "estimated_instance_warmup" {
   description = "The estimated time, in seconds, until a newly launched instance will contribute CloudWatch metrics. Without a value,"
-  default     = 30
+  default     = null
   type        = number
 }
 
