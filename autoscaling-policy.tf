@@ -2,6 +2,7 @@ resource "aws_autoscaling_policy" "autoscaling_policy" {
   name                      = var.name
   autoscaling_group_name    = var.autoscaling_group_name
   adjustment_type           = var.adjustment_type
+  policy_type               = var.policy_type
   estimated_instance_warmup = var.estimated_instance_warmup
 
   ## SimpleScaling ##
